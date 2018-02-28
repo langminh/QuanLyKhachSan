@@ -1,0 +1,157 @@
+﻿@model QuanLyKhachSan.Entity.EF.InOut
+
+<!-- Modal -->
+<div class="modal fade" id="checkInOut" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 668px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><span id="myModalLabel"></span>: <span id="roomName">Phòng 10</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">Giờ vào: </span>
+                            <input id="checkinTime" type="text" class="form-control">
+                        </div>
+                        <br />
+                        <div class="input-group">
+                            <span class="input-group-addon">Thời gian lưu trú: </span>
+                            <input id="lengthStayAuto" type="text" readonly="true" class="form-control">
+                        </div>
+                        <br />
+                        <div class="input-group">
+                            <span class="input-group-addon">Dịch vụ: </span>
+                            <select id="roomServiceType" class="form-control" onchange="roomServiceType_onChange();">
+                                <option value="0">Phòng đơn/Theo giờ</option>
+                                <option value="1">Phòng đơn/Ngày đêm</option>
+                                <option value="2">Phòng đơn/Qua đêm</option>
+                                <option value="3">Phòng đôi/Ngày đêm</option>
+                                <option value="4">Phòng đôi/Qua đêm</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">Giờ ra: </span>
+                            <input id="checkoutTime" type="text" class="form-control">
+                        </div>
+                        <br />
+                        <div class="input-group">
+                            <span class="input-group-addon">Thời gian tính tiền:</span>
+                            <input id="lengthStay" type="text" class="form-control" onchange="GetRoomServiceAmount();">
+                        </div>
+                        <br />
+                        <div class="input-group">
+                            <span class="input-group-addon">Số người: </span>
+                            <input id="personNumber" type="number" min="1" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="input-group" style="padding-left: 15px; padding-right: 15px; width: 100%;">
+                    <span class="input-group-addon">Ghi chú: </span>
+                    <textarea id="note" class="form-control" rows="1"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnPrintInvoice" type="button" class="btn btn-success" onclick="PrintInvoice();">In hóa đơn</button>
+                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#otherServicePanel">Dịch vụ khác</button>
+                <button id="btnCheckOut" type="button" class="btn btn-primary" onclick="PostCheckOut(false);">Check out</button>
+                <button id="btnCheckIn" type="button" class="btn btn-primary" onclick="PostCheckIn();">Check in</button>
+                <button id="btnCancel" type="button" class="btn btn-danger" onclick="CancelCheckIn();">Cancel</button>
+                <button type="button" class="btn btn-default" onclick="Close_onclick();">Close</button>
+            </div>
+            <div class="modal-body">
+                <div id="otherServicePanel" class="row collapse">
+                    <div class="input-group">
+                        <span class="input-group-addon">Loại dịch vụ: </span>
+                        <select id="serviceType" class="form-control" style="width: 200px;">
+                            @{
+                                QuanLyKhachSan.Entity.DataEntities db = new QuanLyKhachSan.Entity.DataEntities();
+                                foreach (var item in db.OtherServices)
+                                {
+                                    <option value="@(item.OtherServiceId)_@(item.Price)">@item.ServiceName</option>
+                                }
+                            }
+                        </select>
+                        <span class="input-group-addon">Số lượng: </span>
+                        <input id="quantity" type="number" min="0" class="form-control">
+                        <div class="input-group-btn">
+                            <button id="addOtherService" class="btn btn-default" type="button" onclick="AddOtherService();">Thêm</button>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="highlight">
+                        <ul id="listOtherServices" class="list-group">
+                            <li class="list-group-item">
+                                <span class="badge btn-info numberformat">10000</span>
+                                <span class="badge btn-success quantity">2</span>
+                                item name
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="badge btn-primary"><span id="otherServiceAmount" class="numberformat">50000</span> VNĐ</span>
+                        Tổng tiền dịch vụ khác
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge btn-success"><span id="roomServiceAmount" class="numberformat">200000</span> VNĐ</span>
+                        Tiền dịch vụ phòng
+                    </li>
+                    <li class="list-group-item">
+                        <span class="badge btn-danger"><span id="totalAmount" class="numberformat">250000</span> VNĐ</span>
+                        Tổng tiền thanh toán
+                    </li>
+                </ul>
+            </div>
+            @*<div class="modal-footer">
+                  <button id="btnCheckOut" type="button" class="btn btn-primary" onclick="PostCheckOut();">Check out</button>
+                  <button id="btnCheckIn" type="button" class="btn btn-primary" onclick="PostCheckIn();">Check in</button>
+                  <button id="btnCancel" type="button" class="btn btn-danger" onclick="CancelCheckIn();">Cancel</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+<style>
+    .quantity {
+        margin-right: 100px !important;
+    }
+
+    .modal-footer button {
+        width: 100px;
+    }
+
+    .input-group-addon {
+        width: 100px;
+    }
+
+    #otherServicePanel:after {
+        color: #959595;
+        content: "Dịch vụ khác";
+        font-size: 12px;
+        font-weight: 700;
+        left: 15px;
+        letter-spacing: 1px;
+        position: absolute;
+        text-transform: uppercase;
+        top: 15px;
+    }
+
+    #otherServicePanel {
+        background-color: #fff;
+        border-color: #ddd;
+        border-radius: 4px 4px 0 0;
+        border-width: 1px;
+        box-shadow: none;
+        margin-left: 0;
+        margin-right: 0;
+        border-style: solid;
+        padding: 45px 15px 15px;
+        position: relative;
+    }
+</style>

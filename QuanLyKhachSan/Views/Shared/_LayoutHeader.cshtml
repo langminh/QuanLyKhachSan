@@ -1,0 +1,37 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <div class="menu_block">
+            <nav class="horizontal-nav full-width horizontalNav-notprocessed">
+                <ul class="sf-menu">
+                    <li class="current"><a href="/">TRANG CHỦ</a></li>
+                    <li><a href="/Home/Vip">V.I.P</a></li>
+                    <li><a href="/Home/Contact">GIẢM GIÁ</a></li>
+                    <li><a href="/Home/About">GIỚI THIỆU</a></li>
+                    <li>
+                        <a href="/Admin/Account/LogOn">ĐĂNG NHẬP</a>
+                        @*@if (2 > 3)
+                        {*@
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="/Admin/Account/Info/@this.User.Identity.Name"><i class="fa fa-info"></i> Trang cá nhân</a></li>
+                                <li><a href="/Admin/Account/ChangePass"><i class="fa fa-edit"></i> Đổi mật khẩu</a></li>
+                                <li><a href="/Admin/Account/LogOff"><i class="fa fa-sign-out fa-fw"></i> Thoát</a></li>
+
+                            </ul>
+                        @*}*@
+                    </li>
+
+                </ul>
+            </nav>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h1>
+                <a href="/">
+                    <img class="logo-img" src="~/Asset/client/images/logo.png" alt="Your Happy Family">
+                </a>
+            </h1>
+        </div>
+    </div>
+</div>

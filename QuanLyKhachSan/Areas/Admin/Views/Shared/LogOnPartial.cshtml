@@ -1,0 +1,42 @@
+﻿@if (this.User.Identity.Name == "admin")
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <i class="fa fa-wrench"></i> Cấu hình <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/Admin/RoomServicePrice/index"><i class="fa fa-usd"></i> Giá phòng</a></li>
+                <li><a href="/Admin/OtherServicePrice/index"><i class="fa fa-glass"></i> Giá dịch vụ khác</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <i class="fa fa-user"></i> @this.User.Identity.Name <span class="caret"></span>
+            </a>
+
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/Admin/Account/Index"><i class="fa fa-cog"></i> Trang Quản Trị</a></li>
+                <li class="divider"></li>
+
+                <li><a href="/Admin/Account/Info/@this.User.Identity.Name"><i class="fa fa-info"></i> Trang cá nhân</a></li>
+                <li><a href="/Admin/Account/ChangePass"><i class="fa fa-edit"></i> Đổi mật khẩu</a></li>
+                <li><a href="/Admin/Account/LogOff"><i class="fa fa-sign-out fa-fw"></i> Thoát</a></li>
+            </ul>
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                <i class="fa fa-user"></i><span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="/Admin/Account/LogOn"><i class="fa fa-cog"></i> Đăng nhập </a></li>
+            </ul>
+        </li>
+    </ul>
+}
+

@@ -1,0 +1,44 @@
+﻿@model QuanLyKhachSan.Entity.EF.OtherService
+
+@{
+    ViewBag.Title = "Thêm dịch vụ";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Thêm dịch vụ</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ServiceName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ServiceName)
+            @Html.ValidationMessageFor(model => model.ServiceName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Price)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Price)
+            @Html.ValidationMessageFor(model => model.Price)
+        </div>
+        <p style="color:red">
+            @this.ViewBag.Message
+        </p>
+        <p>
+            <input type="submit" value="Lưu" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Trở về", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

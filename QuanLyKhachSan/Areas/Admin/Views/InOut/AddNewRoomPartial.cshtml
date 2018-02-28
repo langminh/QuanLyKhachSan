@@ -1,0 +1,53 @@
+﻿@model IEnumerable<QuanLyKhachSan.Entity.EF.Floor>
+
+@{
+    QuanLyKhachSan.Entity.DataEntities db = new QuanLyKhachSan.Entity.DataEntities();
+}
+<div class="modal fade" id="AddNewRoom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 668px;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><span id="myModalLabelAdd"></span><span id="roomName">Thêm mới phòng</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">Tầng: </span>
+                            <select id="floorName" class="form-control">
+                                @{
+                                    List<QuanLyKhachSan.Entity.EF.Floor> list = new List<QuanLyKhachSan.Entity.EF.Floor>();
+                                    list = (from c in db.Floors select c).ToList();
+                                    list.Insert(0, new QuanLyKhachSan.Entity.EF.Floor() { FloorId = 0, FloorName = "Thêm mới tầng" });
+                                    foreach (QuanLyKhachSan.Entity.EF.Floor item in list)
+                                    {
+                                        <option value="@item.FloorId">@item.FloorName</option>
+                                    }
+                                }
+
+                            </select>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" name="roomDouble" type="checkbox" id="roomDouble">
+                            <label class="form-check-label" for="roomDouble">
+                                Phòng đơn/đôi
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">Tên phòng: </span>
+                            <input id="addroomName" type="text" name="roomName" value="dasd" class="form-control">
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnAddRoom" type="button" class="btn btn-success" onclick="AddNewRoom();">Thêm phòng</button>
+                <button type="button" class="btn btn-default" onclick="Close();">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

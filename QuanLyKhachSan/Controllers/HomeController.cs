@@ -26,5 +26,12 @@ namespace QuanLyKhachSan.Controllers
 
             return View();
         }
+
+        public ActionResult Vip()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
     }
 }

@@ -1,0 +1,60 @@
+﻿@model QuanLyKhachSan.Entity.EF.RoomServicePrice
+
+@{
+    ViewBag.Title = "Chỉnh sửa giá";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Chỉnh sửa giá</legend>
+
+        @Html.HiddenFor(model => model.RoomServicePriceId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RoomServiceType)
+        </div>
+        <div class="editor-field">
+            <select id="roomServiceType" name="RoomServiceType">
+                        <option value="0" @(Model.RoomServiceType==0?"selected":"")>Phòng đơn/Theo giờ</option>
+                        <option value="1" @(Model.RoomServiceType==1?"selected":"")>Phòng đơn/Ngày đêm</option>
+                        <option value="2" @(Model.RoomServiceType==2?"selected":"")>Phòng đơn/Qua đêm</option>
+                        <option value="3" @(Model.RoomServiceType==3?"selected":"")>Phòng đôi/Ngày đêm</option>
+                        <option value="4" @(Model.RoomServiceType==4?"selected":"")>Phòng đôi/Qua đêm</option>
+                    </select>
+            @Html.ValidationMessageFor(model => model.RoomServiceType)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Minutes)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Minutes)
+            @Html.ValidationMessageFor(model => model.Minutes)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Price)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Price)
+            @Html.ValidationMessageFor(model => model.Price)
+        </div>
+        <p style="color:red">
+            @this.ViewBag.Message
+        </p>
+        <p>
+            <input type="submit" value="Lưu" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Trở về", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

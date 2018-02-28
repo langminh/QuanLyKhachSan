@@ -1,0 +1,56 @@
+﻿@model IEnumerable<QuanLyKhachSan.Areas.Admin.ViewModel.Detail>
+
+@{
+    decimal roomServiceAmount = 0, otherServiceAmount = 0, totalAmount = 0;
+    string format = "#,#0.#;-#,#0.#";
+    if (Model != null && Model.Count()>0)
+    {
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-3 text-center"><strong>Ngày</strong></div>
+            <div class="col-xs-3 text-center"><strong>Doanh thu phòng</strong></div>
+            <div class="col-xs-3 text-center"><strong>Doanh thu khác</strong></div>
+            <div class="col-xs-3 text-center"><strong>Tổng</strong></div>
+          </div>
+          @*<br/>*@
+        @foreach (var item in Model)
+        {
+            roomServiceAmount += item.RoomServiceAmount;
+            otherServiceAmount += item.OtherServiceAmount;
+            totalAmount += item.TotalAmount;
+          <div class="row">
+            <div class="col-xs-3 text-center">@item.Day</div>
+            <div class="col-xs-3 text-right">@item.RoomServiceAmount.ToString(format)</div>
+            <div class="col-xs-3 text-right">@item.OtherServiceAmount.ToString(format)</div>
+            <div class="col-xs-3 text-right">@item.TotalAmount.ToString(format)</div>
+          </div>         
+        }
+          @*<br/>*@
+          <div class="row">
+            <div class="col-xs-3 text-center"><strong>Tổng cộng:</strong></div>
+            <div class="col-xs-3 text-right"><strong>@roomServiceAmount.ToString(format)</strong></div>
+            <div class="col-xs-3 text-right"><strong>@otherServiceAmount.ToString(format)</strong></div>
+            <div class="col-xs-3 text-right"><strong>@totalAmount.ToString(format)</strong></div>
+          </div>
+        </div>
+        <div class="row"></div>
+    <br/><br/><br/><br/>
+    }
+}
+<br/><br/><br/><br/><br/>
+<style media="all">
+
+    .row .row {
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+    [class*="col-"] {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      background-color: #eee;
+      background-color: rgba(86,61,124,.15);
+      border: 1px solid #ddd;
+      border: 1px solid rgba(86,61,124,.2);
+    }
+
+</style>

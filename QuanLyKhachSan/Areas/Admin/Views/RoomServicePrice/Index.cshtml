@@ -1,0 +1,65 @@
+﻿@model IEnumerable<QuanLyKhachSan.Entity.EF.RoomServicePrice>
+@{
+    ViewBag.Title = "Bảng giá dịch vụ phòng";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+<h2>Bảng giá dịch vụ phòng</h2>
+
+<p>
+    @Html.ActionLink("Thêm giá phòng", "Create")
+</p>
+<table>
+    <tr>
+        <th class="col-xs-3 text-center">
+            Phân loại
+        </th>
+        <th class="col-xs-3 text-right">
+            Thời gian
+        </th>
+        <th class="col-xs-3 text-right">
+            Giá (VNĐ)
+        </th>
+        <th class="col-xs-3 text-center"></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="col-xs-3 text-left">
+                @switch (item.RoomServiceType)
+                {
+                    case 0:
+                        <span>Phòng đơn/Theo giờ</span>
+                        break;
+                    case 1:
+                        <span>Phòng đơn/Ngày đêm</span>
+                        break;
+                    case 2:
+                        <span>Phòng đơn/Qua đêm</span>
+                        break;
+                    case 3:
+                        <span>Phòng đôi/Ngày đêm</span>
+                        break;
+                    case 4:
+                        <span>Phòng đôi/Qua đêm</span>
+                        break;
+                    default:
+                        break;
+                }
+            </td>
+            <td class="col-xs-3 text-right">
+                @item.Minutes
+            </td>
+            <td class="col-xs-3 text-right">
+                @item.Price.ToString("#,#0.#;-#,#0.#")
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.RoomServicePriceId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.RoomServicePriceId })
+            </td>
+        </tr>
+    }
+
+</table>
+
+

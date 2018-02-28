@@ -1,0 +1,47 @@
+﻿@model QuanLyKhachSan.Areas.Admin.ViewModel.LogOnModel
+
+@{
+    ViewBag.Title = "LogOn";
+    Layout = "~/Areas/Admin/Views/Shared/_layoutLogin.cshtml";
+}
+<div class="container" style="width:50%">
+    <div class="jumbotron">
+        <div class="row">
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true)
+                <fieldset>
+                    <legend>Đăng nhập</legend>
+                    @if (ViewBag.Message != null && ViewBag.Message.ToString().Trim() != "")
+                    {
+                        <div class="alert alert-danger" role="alert"><strong>Đăng nhập thất bại</strong><Br />@ViewBag.Message</div>
+                    }
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Tên đăng nhập" })
+                        @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                        @Html.TextBoxFor(model => model.Password, new { @class="form-control", @placeholder="Mật khẩu", @type="password"})
+                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                    </div>
+
+                    <center>
+                        @Html.CheckBoxFor(model => model.RememberMe) @Html.LabelFor(model => model.RememberMe)
+                        @Html.ValidationMessageFor(model => model.RememberMe,"", new { @class="text-danger"})
+                        <br><button type="submit" class="btn btn-info">Đăng nhập</button>
+                    </center>
+                </fieldset>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $('#UserName').addClass('form-control');
+        $('#Password').addClass('form-control');
+    </script>
+}

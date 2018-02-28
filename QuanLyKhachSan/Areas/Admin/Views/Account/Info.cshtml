@@ -1,0 +1,142 @@
+﻿@model QuanLyKhachSan.Areas.Admin.ViewModel.UserUpdate
+@{
+    ViewBag.Title = "Info";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5  toppad  pull-right col-md-offset-3 ">
+            <p class=" text-info">@DateTime.Now.ToString("dd/MM/yyy hh:mm tt") </p>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad">
+
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        @{ string f = string.Empty;}
+                        @{
+                            if (Model != null)
+                            {
+                                if (!string.IsNullOrEmpty(Model.UserName))
+                                {
+                                    f = Model.UserName;
+                                }
+                            }
+                        }
+                        @f
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3 col-lg-3 " align="center">
+                            <img alt="User Pic" src="~/Asset/images/user_male2-512.png" class="img-circle img-responsive">
+                        </div>
+                        <div class=" col-md-9 col-lg-9 ">
+                            @using (Html.BeginForm("Info", "Account", FormMethod.Post))
+                            {
+
+                                @Html.ValidationSummary(true)
+                                <fieldset>
+                                    @Html.HiddenFor(model => model.UserID)
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            @Html.LabelFor(model => model.UserName, new { @class = "input-group-addon" })
+                                            <div>
+                                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+                                            </div>
+
+                                        </div>
+                                        <div class="error-msg">
+                                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            @Html.LabelFor(model => model.FullName, new { @class = "input-group-addon" })
+                                            <div>
+                                                @Html.TextBoxFor(model => model.FullName, new { @class = "form-control" })
+                                            </div>
+
+                                        </div>
+                                        <div class="error-msg">
+                                            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            @Html.LabelFor(model => model.Sex, new { @class = "input-group-addon" })
+                                            @Html.EditorFor(model => model.Sex, new { @class = "form-control" })
+
+                                        </div>
+                                        <div class="error-msg">
+                                            @Html.ValidationMessageFor(model => model.Sex, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            @Html.LabelFor(model => model.Address, new { @class = "input-group-addon" })
+                                            <div>
+                                                @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                                            </div>
+
+                                        </div>
+                                        <div class="error-msg">
+                                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            @Html.LabelFor(model => model.Phone, new { @class = "input-group-addon" })
+                                            <div>
+                                                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+                                            </div>
+
+                                        </div>
+                                        <div class="error-msg">
+                                            @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="input-group" id="button">
+                                        <div class="col-md-6">
+                                            <input type="submit" value="Cập nhật" id="btnupdate" class="btn btn-success" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button class="btn btn-danger" id="btnCancel"> Hủy </button>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a data-original-title="Edit this user" data-toggle="tooltip" class="btn btn-sm btn-warning" id="btnEdit"><i class="fa fa-edit"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#btnEdit').click(function (e) {
+                e.preventDefault();
+                $('#button').toggle();
+            });
+            $('#btnCancel').click(function (e) {
+                e.preventDefault();
+                $('#button').hide();
+            })
+
+            $('#Sex').children('option:first').text('Chọn giới tính');
+            $('#Sex').find('option').eq(1).text('Nam');
+            $('#Sex').find('option').eq(2).text('Nữ');
+
+
+        })
+    </script>
+}

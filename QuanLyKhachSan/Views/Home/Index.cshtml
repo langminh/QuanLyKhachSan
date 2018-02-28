@@ -1,31 +1,190 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    /**/
+
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+@using QuanLyKhachSan.Entity.Dao
+
+@{
+    var room = new RoomDao();
+}
+
+
+<div class="row">
+    @{ int i = 0;}
+    @foreach (var item in room.GetListVipRom())
+    {
+        <div class="col-md-4">
+            <div class="banner">
+                <img src="@item.Src" alt="@item.RoomName">
+                <div class="label">
+                    <div class="title">@item.RoomName</div>
+                    <div class="price">FROM<span>$ 1000</span></div>
+                    <a href="#">Đọc thêm</a>
+                </div>
+            </div>
+        </div>
+        if (i > 1)
+        {
+            break;
+        }
+        i++;
+    }
+</div>
+<div class="clear"></div>
+
+
+<div class="row">
+    <h3 class="tilte-name">Phòng HOT</h3>
+    @{ int a = 0;}
+    @foreach (var item in room.GetListHotRoom())
+    {
+        <div class="col-md-6 item">
+            <img src="@item.Src" alt="@item.RoomName" class="img_inner fleft" />
+            <div class="extra_wrapper">
+                <div class="text1 col1">
+                    <a href="#">@item.RoomName</a>
+                </div>
+                <p>
+                    @{ string des = string.Empty;}
+                    @if (item.Descreption != null)
+                    {
+                        des = item.Descreption;
+                    }
+                    @Html.Raw(des)
+                </p>
+                <a href="#" class="link1">Đọc thêm</a>
+            </div>
+        </div>
+        if (a > 4)
+        {
+            break;
+        }
+        a++;
+    }
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
+    <h3 class="tilte-name">Phòng Giảm giá</h3>
+    @{ int b = 0;}
+    @foreach (var item in room.GetListSaleRoom())
+    {
+        <div class="col-md-6 item">
+            <img src="@item.Src" alt="@item.RoomName" class="img_inner fleft" />
+            <div class="extra_wrapper">
+                <div class="text1 col1">
+                    <a href="#">@item.RoomName</a>
+                </div>
+                <p>
+                    @{ string des = string.Empty;}
+                    @if (item.Descreption != null)
+                    {
+                        des = item.Descreption;
+                    }
+                    @Html.Raw(des)
+                </p>
+                <a href="#" class="link1">Đọc thêm</a>
+            </div>
+        </div>
+        if (b > 4)
+        {
+            break;
+        }
+        b++;
+    }
 </div>
+<div class="row">
+    <h3 class="tilte-name">Phòng bình dân</h3>
+    @{ int c = 0;}
+    @foreach (var item in room.GetListNormalRoom())
+    {
+        <div class="col-md-6 item">
+            <img src="@item.Src" alt="@item.RoomName" class="img_inner fleft" />
+            <div class="extra_wrapper">
+                <div class="text1 col1">
+                    <a href="#">@item.RoomName</a>
+                </div>
+                <p>
+                    @{ string des = string.Empty;}
+                    @if (item.Descreption != null)
+                    {
+                        des = item.Descreption;
+                    }
+                    @Html.Raw(des)
+                </p>
+                <a href="#" class="link1">Đọc thêm</a>
+            </div>
+        </div>
+        if (c > 4)
+        {
+            break;
+        }
+        c++;
+    }
+</div>
+
+@*<div class="row">
+        <div class="col-md-6">
+            <h3 class="tilte-name">Special offers</h3>
+            <div class="row item">
+                <img src="~/Asset/client/images/page3_img1.jpg" alt="" class="img_inner fleft">
+                <div class="extra_wrapper">
+                    <div class="text1 col1"><a href="#">Barcelona</a></div>
+                    <p>Cras facilisis, nulla vel viverra auctor, leo gna sodales felis, quis malesuada nibh odio ut velit. Proin pharetra luctus diam, a celerisque eros convallis accumsan. </p>Maecenas vehicula egestas venenatis. Duis massa elit, auctor non pellentesque vel
+                    <br>
+                    <a href="#" class="link1">Đọc thêm</a>
+                </div>
+            </div>
+            <div class="row item">
+                <img src="~/Asset/client/images/page3_img2.jpg" alt="" class="img_inner fleft">
+                <div class="extra_wrapper">
+                    <div class="text1 col1"><a href="#">Moscow</a></div>
+                    <p>Cras facilisis, nulla vel viverra auctor, leo gna sodales felis, quis malesuada nibh odio ut velit. Proin pharetra luctus diam, a celerisque eros convallis accumsan. </p>Maecenas vehicula egestas venenatis. Duis massa elit, auctor non pellentesque vel
+                    <br>
+                    <a href="#" class="link1">Đọc thêm</a>
+                </div>
+            </div>
+            <div class="row item">
+                <img src="~/Asset/client/images/page3_img3.jpg" alt="" class="img_inner fleft">
+                <div class="extra_wrapper">
+                    <div class="text1 col1"><a href="#">Thailand</a></div>
+                    <p>Cras facilisis, nulla vel viverra auctor, leo gna sodales felis, quis malesuada nibh odio ut velit. Proin pharetra luctus diam, a celerisque eros convallis accumsan. </p>Maecenas vehicula egestas venenatis. Duis massa elit, auctor non pellentesque vel
+                    <br>
+                    <a href="#" class="link1">Đọc thêm</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3 class="tilte-name">Special offers</h3>
+            <div class="row item">
+                <img src="~/Asset/client/images/page3_img1.jpg" alt="" class="img_inner fleft">
+                <div class="extra_wrapper">
+                    <div class="text1 col1"><a href="#">Barcelona</a></div>
+                    <p>Cras facilisis, nulla vel viverra auctor, leo gna sodales felis, quis malesuada nibh odio ut velit. Proin pharetra luctus diam, a celerisque eros convallis accumsan. </p>Maecenas vehicula egestas venenatis. Duis massa elit, auctor non pellentesque vel
+                    <br>
+                    <a href="#" class="link1">Đọc thêm</a>
+                </div>
+            </div>
+            <div class="row item">
+                <img src="~/Asset/client/images/page3_img2.jpg" alt="" class="img_inner fleft">
+                <div class="extra_wrapper">
+                    <div class="text1 col1"><a href="#">Moscow</a></div>
+                    <p>Cras facilisis, nulla vel viverra auctor, leo gna sodales felis, quis malesuada nibh odio ut velit. Proin pharetra luctus diam, a celerisque eros convallis accumsan. </p>Maecenas vehicula egestas venenatis. Duis massa elit, auctor non pellentesque vel
+                    <br>
+                    <a href="#" class="link1">Đọc thêm</a>
+                </div>
+            </div>
+            <div class="row item">
+                <img src="~/Asset/client/images/page3_img3.jpg" alt="" class="img_inner fleft">
+                <div class="extra_wrapper">
+                    <div class="text1 col1"><a href="#">Thailand</a></div>
+                    <p>Cras facilisis, nulla vel viverra auctor, leo gna sodales felis, quis malesuada nibh odio ut velit. Proin pharetra luctus diam, a celerisque eros convallis accumsan. </p>Maecenas vehicula egestas venenatis. Duis massa elit, auctor non pellentesque vel
+                    <br>
+                    <a href="#" class="link1">Đọc thêm</a>
+                </div>
+            </div>
+        </div>
+
+    </div>*@

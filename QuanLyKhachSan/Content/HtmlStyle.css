@@ -1,0 +1,110 @@
+﻿/*#region Thẻ h */
+h1, h2, h3,
+h4, h5, h6 {
+    color: #000;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.75em;
+}
+
+h3 {
+    font-size: 1.2em;
+}
+
+h4 {
+    font-size: 1.1em;
+}
+
+h5, h6 {
+    font-size: 1em;
+}
+
+    h5 a:link, h5 a:visited, h5 a:active {
+        padding: 0;
+        text-decoration: none;
+    }
+
+
+/*#endregion */
+/*#region Thẻ ul */
+ul {
+    /*Bỏ đánh dấu đầu dòng*/
+    list-style: none;
+    /*canh trái danh sách*/
+    margin: 0;
+    padding: 0px;
+}
+
+/*#endregion */
+/*#region thẻ a */
+a {
+    text-decoration: none;
+    color: #253dfc;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    a:active {
+        /*color: #0519fa;*/
+    }
+
+    a:visited {
+        /*color: #05fbdd;*/
+    }
+
+
+/*#endregion */
+/*#region textArea */
+textArea {
+    font-family: 'Times New Roman';
+    width: 300px;
+    height: 100px;
+}
+/*#endregion */
+/*#region footer */
+footer {
+    margin: 30px 0px;
+}
+/*#endregion */
+
+/*#region Image */
+img {
+    border: none;
+}
+/*#endregion */
+/*#region input submit */
+input[type="submit"] {
+    background: #0094ff;
+    padding: 5px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 8px;
+}
+/*#endregion */
+/*#region button */
+button {
+    background: #0094ff;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    min-width: 50px;
+    font-weight: bold;
+    color: #fff;
+}
+/*#endregion */
+/*#region Thẻ table */
+tr, td {
+    margin: 5px;
+    padding: 10px;
+}
+/*#endregion */

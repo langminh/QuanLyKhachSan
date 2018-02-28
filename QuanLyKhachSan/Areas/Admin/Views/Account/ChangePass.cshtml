@@ -1,0 +1,45 @@
+﻿@model QuanLyKhachSan.Areas.Admin.ViewModel.ChangePasswordVM
+
+@{
+    ViewBag.Title = "Đổi mật khẩu";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Đổi mật khẩu</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OldPassword)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.OldPassword)
+            @Html.ValidationMessageFor(model => model.OldPassword)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NewPassword)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NewPassword)
+            @Html.ValidationMessageFor(model => model.NewPassword)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ConfirmPassword)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ConfirmPassword)
+            @Html.ValidationMessageFor(model => model.ConfirmPassword)
+        </div>
+        <p style="color:red">
+            @this.ViewBag.Message
+        </p>
+        <p>
+            <input type="submit" value="Lưu lại" />
+        </p>
+    </fieldset>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

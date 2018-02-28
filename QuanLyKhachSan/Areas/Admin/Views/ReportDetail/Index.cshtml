@@ -1,0 +1,53 @@
+﻿@model QuanLyKhachSan.Areas.Admin.ViewModel.ReportDetail
+@{
+    ViewBag.Title = "Báo cáo chi tiết";
+    Layout = "~/Areas/Admin/Views/Shared/_layout.cshtml";
+}
+<div class="page-header">
+    <h1>Báo cáo chi tiết</h1>
+</div>
+<div class="container" style="width:60%">
+    <div class="jumbotron">
+        <div class="row">
+            @using (Html.BeginForm("ViewReport", "ReportDetail", FormMethod.Post))
+            {
+                @Html.ValidationSummary(true)
+                <fieldset>
+                    <legend>Tham số</legend>
+                    <div class="input-group">
+                        <span class="input-group-addon">@Html.LabelFor(model => model.Parameter.FromDate)</span>
+                        <input id="fromDate" name="FromDate" class="form-control" type="text" value="@Model.Parameter.FromDate">
+                        <span class="input-group-addon">@Html.LabelFor(model => model.Parameter.ToDate)</span>
+                        <input id="toDate" name="ToDate" class="form-control" type="text" value="@Model.Parameter.ToDate">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Xem</button>
+                        </div>
+                    </div>
+                </fieldset>
+            }
+        </div>
+    </div>
+</div>
+<style>
+    div.datepicker.dropdown-menu {
+        top: 320px;
+    }
+</style>
+@section scripts
+{
+    <script>
+        $(function () {
+            window.prettyPrint && prettyPrint();
+            var fromdate = $('#fromDate').datepicker({ format: 'dd/mm/yyyy' }).on('changeDate', function (ev) {
+                fromdate.hide();
+            }).data('datepicker');
+            var todate = $('#toDate').datepicker({ format: 'dd/mm/yyyy' }).on('changeDate', function (ev) {
+                todate.hide();
+            }).data('datepicker');
+        });
+    </script>
+}
+@if (Model.Details != null)
+{
+    @Html.Partial("Detail2Partial", Model.Details)
+}

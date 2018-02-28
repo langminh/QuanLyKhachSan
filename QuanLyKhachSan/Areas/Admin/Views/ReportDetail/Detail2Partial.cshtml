@@ -1,0 +1,69 @@
+﻿@model IEnumerable<QuanLyKhachSan.Areas.Admin.ViewModel.Detail2>
+
+@{
+    decimal totalAmount = 0;
+    string format = "#,#0.#;-#,#0.#";
+    if (Model != null && Model.Count()>0)
+    {
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-3 text-center"><strong>Ngày</strong></div>
+            <div class="col-xs-2 text-center"><strong>Phòng</strong></div>
+            <div class="col-xs-3 text-center"><strong>Dịch vụ</strong></div>
+              <div class="col-xs-2 text-center"><strong>Số lượng</strong></div>
+            <div class="col-xs-2 text-center"><strong>Số tiền</strong></div>
+          </div>
+        @foreach (var item in Model)
+        {
+            totalAmount += item.TotalAmount;
+          <div class="row">
+            <div class="col-xs-3 text-center">@item.Day</div>
+            <div class="col-xs-2 text-center">@item.RoomName</div>
+            <div class="col-xs-3 text-right">Dịch vụ phòng</div>
+            <div class="col-xs-2 text-right">@item.Count</div>
+            <div class="col-xs-2 text-right">@item.RoomServiceAmount.ToString(format)</div>
+          </div>   
+          foreach (var otherService in item.OtherServiceDetails)
+          {
+              <div class="row">
+                <div class="col-xs-3 text-center">&#008;</div>
+                <div class="col-xs-2 text-center">&#008;</div>
+                <div class="col-xs-3 text-right">@otherService.OtherServiceName</div>
+                <div class="col-xs-2 text-right">@otherService.Quantity</div>
+                <div class="col-xs-2 text-right">@otherService.OtherServiceAmount.ToString(format)</div>
+              </div> 
+          }
+          <div class="row">
+            <div class="col-xs-8 text-right"><b>Tổng cộng trong ngày</b></div>
+            <div class="col-xs-4 text-right"><b>@item.TotalAmount.ToString(format) </b></div>
+          </div>          
+        }
+        </div>
+        <br />
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-8 text-right"><b>Tổng doanh thu</b></div>
+                <div class="col-xs-4 text-right"><b>@totalAmount.ToString(format) </b></div>
+              </div> 
+        </div>  
+        <br/><br/><br/><br/>
+    }
+}
+         
+<br/><br/><br/><br/><br/>
+<style media="all">
+
+    .row .row {
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+    [class*="col-"] {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      background-color: #eee;
+      background-color: rgba(86,61,124,.15);
+      border: 1px solid #ddd;
+      border: 1px solid rgba(86,61,124,.2);
+    }
+
+</style>

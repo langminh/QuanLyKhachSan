@@ -1,0 +1,26 @@
+﻿
+/*#region Layout */
+
+/*body chứa phần nội dung*/
+body {
+    margin: 0 auto;
+    width: 98%;
+    min-width: 960px;
+    background: #e2e2e2;
+}
+
+.body {
+    background: #fff;
+}
+/*Định kích thước main và sidebar*/
+/*Dùng Inline-Block cần chỉ định rõ width cụ thể các đối tượng*/
+.main {
+    margin: 10px;
+    width: 74%;
+}
+
+.sidebar {
+    margin-top: 10px;
+    width: 23%;
+}
+/*#endregion */

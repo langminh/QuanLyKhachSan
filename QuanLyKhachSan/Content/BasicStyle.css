@@ -1,0 +1,84 @@
+﻿/*#region Inline-Block */
+.inline-block {
+    display: inline-block;
+    vertical-align: top;
+}
+/*#endregion */
+/*#region Float */
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.clear-both {
+    clear: both;
+}
+
+/*#endregion */
+/*#region Link header */
+.header1 {
+    background: #d1cdcd;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+    .header1, .header1 a {
+        color: #000;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+.header2 {
+    background: #4f86f8;
+    padding: 3px;
+    border-radius: 5px;
+}
+
+    .header2, .header2 a {
+        color: #fff;
+        font-size: 16px;
+    }
+
+
+/*#endregion */
+/*#region textHeader . Định dạng tiêu đề */
+.textHeader {
+    font-size: 20px;
+    font-weight: bold;
+    color: #253dfc;
+    padding: 10px 0px;
+}
+/*#endregion */
+
+/*#region LinkButton */
+.linkButton1 {
+    background: #0094ff;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 5px;
+    margin: 2px;
+}
+.linkButton2 {
+    background: #0553b4;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 2px;
+    border-radius: 5px;
+}
+/*#endregion */
+
+/*#region error validation jQuery .Định dạng báo lỗi valdate , mã VS tự động tạo ra */
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+.field-validation-valid {
+    display: none;
+}
+/*#endregion */

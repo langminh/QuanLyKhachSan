@@ -1,0 +1,79 @@
+﻿@using QuanLyKhachSan.Entity.Dao
+
+@{ 
+    var slide = new SlideDao().GetListSlide();
+}
+
+<div class="row">
+    <div class="container">
+        <div class="cls">
+            <div data-am-fadeshow="next-prev-navigation">
+                <!-- Radio -->
+                @{ int index = 0;}
+                @foreach (var temp in slide)
+                {
+                    <input type="radio" name="css-fadeshow" id="slide-@index" />
+                    if (index > 3)
+                    {
+                        break;
+                    }
+                    index++;
+                }
+                <!-- Slides -->
+                <div class="fs-slides">
+                    @{ int i = 0;}
+                    @foreach (var temp in slide)
+                    {
+                        <div class="fs-slide" style="background-image: url(@temp.Image);"></div>
+                        if (i > 3)
+                        {
+                            break;
+                        }
+                        i++;
+                    }
+                </div>
+                <!-- Quick Navigation -->
+                <div class="fs-quick-nav">
+                    @{ int fsN = 0;}
+                    @foreach (var temp in slide)
+                    {
+                        <label class="fs-quick-btn" for="slide-@fsN"></label>
+                        if (fsN > 3)
+                        {
+                            break;
+                        }
+                        fsN++;
+                    }
+                </div>
+
+                <!-- Prev Navigation -->
+                <div class="fs-prev-nav">
+                    @{ int fsP = 0;}
+                    @foreach (var temp in slide)
+                    {
+                        <label class="fs-prev-btn" for="slide-@fsP"></label>
+                        if (fsP > 3)
+                        {
+                            break;
+                        }
+                        fsP++;
+                    }
+                </div>
+
+                <!-- Next Navigation -->
+                <div class="fs-next-nav">
+                    @{ int fsL = 0;}
+                    @foreach (var temp in slide)
+                    {
+                        <label class="fs-next-btn" for="slide-@fsL"></label>
+                        if (fsL > 3)
+                        {
+                            break;
+                        }
+                        fsL++;
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

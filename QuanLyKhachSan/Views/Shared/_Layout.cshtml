@@ -2,41 +2,81 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <meta name="format-detection" content="telephone=no" />
+
+
+    <link href="~/Asset/client/booking/css/booking.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/Asset/client/css/camera.css">
+    <link rel="stylesheet" href="~/Asset/client/css/owl.carousel.css">
+    <link rel="stylesheet" href="~/Asset/client/css/style.css">
+    <script src="~/Asset/client/js/jquery.js"></script>
+    <script src="~/Asset/client/js/jquery-migrate-1.2.1.js"></script>
+    <script src="~/Asset/client/js/script.js"></script>
+    <script src="~/Asset/client/js/superfish.js"></script>
+    <script src="~/Asset/client/js/jquery.ui.totop.js"></script>
+    <script src="~/Asset/client/js/jquery.equalheights.js"></script>
+    <script src="~/Asset/client/js/jquery.mobilemenu.js"></script>
+    <script src="~/Asset/client/js/jquery.easing.1.3.js"></script>
+    <script src="~/Asset/client/js/owl.carousel.js"></script>
+
+    <script src="~/Asset/client/js/camera.js"></script>
+    <link href="~/Asset/client/style.css" rel="stylesheet" />
+    <!--[if (gt IE 9)|!(IE)]><!-->
+    <script src="~/Asset/client/js/jquery.mobile.customized.min.js"></script>
+
+    <link href="@Styles.Url("~/css")" rel="stylesheet" type="text/css" />
+    <link href="~/Asset/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+    <!--<![endif]-->
+
+
+    <script>
+        $(document).ready(function () {
+            jQuery('#camera_wrap').camera({
+                loader: false,
+                pagination: false,
+                minHeight: '444',
+                thumbnails: false,
+                height: '48.375%',
+                caption: true,
+                navigation: true,
+                fx: 'mosaic'
+            });
+            /*carousel*/
+            var owl = $("#owl");
+            owl.owlCarousel({
+                items: 2, //10 items above 1000px browser width
+                itemsDesktop: [995, 2], //5 items between 1000px and 901px
+                itemsDesktopSmall: [767, 2], // betweem 900px and 601px
+                itemsTablet: [700, 2], //2 items between 600 and 0
+                itemsMobile: [479, 1], // itemsMobile disabled - inherit from itemsTablet option
+                navigation: true,
+                pagination: false
+            });
+            $().UItoTop({ easingType: 'easeOutQuart' });
+        });
+    </script>
+
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-            </div>
+    <!--==============================header=================================-->
+    <header>
+        @Html.Partial("_LayoutHeader")
+        @Html.Partial("_layoutSlide")
+    </header>
+
+    <!--==============================Content=================================-->
+    <div class="content">
+        <div class="col-md-12">
+            @RenderBody()
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    <!--==============================footer=================================-->
+    @Html.Partial("_layoutFooter")
     @RenderSection("scripts", required: false)
 </body>
 </html>
