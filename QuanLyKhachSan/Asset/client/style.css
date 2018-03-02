@@ -940,3 +940,8 @@ h3 {
 .row.item {
     margin-top: 20px;
 }
+
+i.fa.fa-user{
+    margin-top: -3px;
+    margin-right: 5px;
+}

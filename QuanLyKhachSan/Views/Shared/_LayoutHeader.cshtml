@@ -8,16 +8,20 @@
                     <li><a href="/Home/Contact">GIẢM GIÁ</a></li>
                     <li><a href="/Home/About">GIỚI THIỆU</a></li>
                     <li>
-                        <a href="/Admin/Account/LogOn">ĐĂNG NHẬP</a>
-                        @*@if (2 > 3)
-                        {*@
+
+                        @if (User.Identity.IsAuthenticated)
+                        {<a href="/Admin/Account/Info/@User.Identity.Name"><i class="fa fa-user"></i>@User.Identity.Name</a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="/Admin/Account/Info/@this.User.Identity.Name"><i class="fa fa-info"></i> Trang cá nhân</a></li>
+                                <li><a href="/Admin/Account/Info/@User.Identity.Name"><i class="fa fa-info"></i> Trang cá nhân</a></li>
                                 <li><a href="/Admin/Account/ChangePass"><i class="fa fa-edit"></i> Đổi mật khẩu</a></li>
                                 <li><a href="/Admin/Account/LogOff"><i class="fa fa-sign-out fa-fw"></i> Thoát</a></li>
 
                             </ul>
-                        @*}*@
+                        }
+                        else
+                        {
+                            <a href="/Admin/Account/LogOn">ĐĂNG NHẬP</a>
+                        }
                     </li>
 
                 </ul>

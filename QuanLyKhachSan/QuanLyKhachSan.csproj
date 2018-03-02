@@ -166,6 +166,8 @@
     <Compile Include="Areas\Admin\ViewModel\BillModel.cs" />
     <Compile Include="Areas\Admin\ViewModel\ReportViewModel.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InOutController.cs" />
+    <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Entity\Dao\RoomDao.cs" />
     <Compile Include="Entity\Dao\SlideDao.cs" />
     <Compile Include="Entity\EF\Config.cs" />
@@ -187,7 +189,11 @@
     <Compile Include="Helper\ExtensionMethod.cs" />
     <Compile Include="Helper\LoginDao.cs" />
     <Compile Include="Areas\Admin\Code\UserLogin.cs" />
+    <Compile Include="Models\AjaxModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\AccountViewModel.cs" />
+    <Compile Include="ViewModel\BillModel.cs" />
+    <Compile Include="ViewModel\ReportViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Asset\admin\js\userController.js" />
@@ -1033,6 +1039,9 @@
     <Content Include="Views\Shared\_layoutSlide.cshtml" />
     <Content Include="Views\Shared\_layoutFooter.cshtml" />
     <Content Include="Views\Home\Vip.cshtml" />
+    <Content Include="Views\Room\Room.cshtml" />
+    <Content Include="Views\Room\Detail.cshtml" />
+    <Content Include="Views\Shared\ModalPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1040,7 +1049,6 @@
     <Folder Include="Content\Image\files\" />
     <Folder Include="Content\Image\flash\" />
     <Folder Include="Content\Image\_thumbs\Files\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

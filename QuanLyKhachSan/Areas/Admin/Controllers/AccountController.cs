@@ -1,4 +1,5 @@
-﻿using QuanLyKhachSan.Areas.Admin.ViewModel;
+﻿using QuanLyKhachSan.Areas.Admin.Code;
+using QuanLyKhachSan.Areas.Admin.ViewModel;
 using QuanLyKhachSan.Entity;
 using QuanLyKhachSan.Entity.EF;
 using QuanLyKhachSan.Helper;
@@ -52,47 +53,23 @@ namespace QuanLyKhachSan.Areas.Admin.Controllers
                 {
                     //Đăng nhập thành công, phân quyền người dùng truy cập
                     var userLogon = LoginDao.CheckUser(model.UserName, model.Password);
+                    
                     if(userLogon != null)
                     {
                         if(userLogon.RoleID.Value == 1)
                         {
+                            Session[CommonContanst.USER_SESSION] = new UserLogin() { UserID = userLogon.UserID, UserName = userLogon.UserName };
+                            FormsAuthentication.SetAuthCookie(userLogon.UserName, true);
+
                             return RedirectToAction("Index", "InOut");
                         }
                         else
                         {
-                            return Redirect(this.Request.QueryString["ReturnUrl"] ?? "/");
+                            FormsAuthentication.SetAuthCookie(userLogon.UserName, true);
+                            return RedirectToAction("Index", "Home", new { area = "" });
                         }
                     }
                 }
-
-                //if (UserLogOn != null)
-                //{
-                //    if (UserLogOn.RoleID == 1)
-                //    {
-
-                //        FormsAuthentication.SetAuthCookie(model.UserName, false);
-
-                //        var authTicket = new FormsAuthenticationTicket(1, UserLogOn.UserName, DateTime.Now, DateTime.Now.AddMinutes(20), false, UserLogOn.UserName);
-                //        string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                //        var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                //        HttpContext.Response.Cookies.Add(authCookie);
-                //        //return RedirectToAction("Index", "Home");
-                //        //FormsAuthentication.SetAuthCookie(UserLogOn.UserName, true);
-                //        return RedirectToAction("Index", "InOut");
-                //    }
-                //    else
-                //    {
-                //        FormsAuthentication.SetAuthCookie(model.UserName, false);
-
-                //        var authTicket = new FormsAuthenticationTicket(1, UserLogOn.UserName, DateTime.Now, DateTime.Now.AddMinutes(20), false, UserLogOn.UserName);
-                //        string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                //        var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                //        HttpContext.Response.Cookies.Add(authCookie);
-                //        return Redirect(this.Request.QueryString["ReturnUrl"] ?? "/");
-                //    }
-
-
-                //}
                 ViewBag.Message = "Vui lòng kiểm tra lại tên đăng nhập và mật khẩu";
                 return View("LogOn", model);
             }

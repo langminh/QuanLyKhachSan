@@ -6,6 +6,8 @@ using System.Web.Mvc;
 
 namespace QuanLyKhachSan.Controllers
 {
+    [RoutePrefix("Home")]
+    [Route("{action = Index}")]
     public class HomeController : Controller
     {
         public ActionResult Index()

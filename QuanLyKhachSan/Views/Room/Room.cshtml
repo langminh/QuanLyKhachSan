@@ -1,0 +1,70 @@
+﻿@using QuanLyKhachSan.Entity
+@{
+                /**/
+
+                ViewBag.Title = "Room";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model IEnumerable<QuanLyKhachSan.Entity.EF.Room>
+
+@{
+    <div class="banners">
+        @{ int i = 0;}
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4">
+                <div class="banner">
+                    <img src="@item.Src" alt="@item.RoomName">
+                    <div class="label">
+                        <div class="title">@item.RoomName</div>
+                        <div class="price">chỉ từ<span>$ 1000</span></div>
+                        @{if (!item.Status)
+                            {
+                                <a id="room_@(item.RoomId)_btnCheckin" onclick="CheckIn(@item.RoomId,'@item.RoomName',@item.IsDouble.ToString().ToLower());" href="#">Đặt phòng</a>
+                            }
+                            else
+                            {
+                                <a href="">Phòng đã được đặt</a>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            if (i > 1)
+            {
+                <div class="clear"></div>
+                i = 0;
+            }
+            i++;
+        }
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3 class="head1">Danh sách các phòng</h3>
+            <ul class="list">
+                @{ var temp = new DataEntities().Types.OrderBy(x => x.TypeID).ToList();}
+                @foreach (var item in temp)
+                {
+                    <li><a href="/Room/Room/@item.TypeID">@item.TypeName</a></li>
+                }
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <h3 class="head1">Phòng nổi bật</h3>
+            <ul class="list">
+                @{ var temp_1 = new DataEntities().Rooms.Where(x => x.TypeID == 2).ToList();}
+                @foreach (var item in temp_1)
+                {
+                    if (item.Status)
+                    {
+                        continue;
+                    }
+                    <li><a href="/Room/Detail/@item.RoomId">@item.RoomName</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+
+}

@@ -1,0 +1,20 @@
+﻿@model QuanLyKhachSan.Entity.EF.Room
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<div class="col-md-12">
+    <h3>@Model.RoomName</h3>
+    <div class="blog">
+        <div class="extra_wrapper">
+            Posted by
+            <a href="#">Admin</a>
+        </div>
+        <div class="clear"></div>
+        <img src="@Model.Src" alt="" class="img_inner">
+         @Html.Raw(Model.Content)
+        <a href="#" class="link1">Đặt phòng</a>
+    </div>
+</div>
+

@@ -77,6 +77,399 @@
     </div>
     <!--==============================footer=================================-->
     @Html.Partial("_layoutFooter")
+    @Html.Partial("ModalPartial", new QuanLyKhachSan.Entity.EF.InOut())
+    <script src="~/Scripts/jquery-2.1.3.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery-ui-1.8.20.min.js"></script>
+    <script src="~/Scripts/modernizr-2.5.3.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.number.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
     @RenderSection("scripts", required: false)
+    <script>
+        var otherServiceAmount = 0;
+        var roomServiceAmount = 0;
+        var totalAmount = 0
+        var otherServices = [];
+        var curentRoomId = -1;
+        var t_CheckIn, t_CheckOut;
+
+
+        $(function () {
+            $('.numberformat').number(true, 0, ',', '.');
+        });
+        function AddOtherService() {
+            var val = $('#serviceType option:selected').val().split('_');
+            var price = parseFloat(val[1]);
+            var quantity = parseFloat($('#quantity').val());
+            if (quantity > 0) {
+                var name = $('#serviceType option:selected').text();
+                var newInOut_OtherService = { OtherServiceId: val[0], ServiceName: name, Quantity: quantity, Amount: price * quantity, IsDel: false }
+                var addnew = true;
+                for (var i = 0; i < otherServices.length; i++) {
+                    if (otherServices[i].OtherServiceId == newInOut_OtherService.OtherServiceId) {
+                        addnew = false;
+                        otherServices[i].Quantity += newInOut_OtherService.Quantity;
+                        otherServices[i].Amount += newInOut_OtherService.Amount;
+                        UpdateOtherServiceItem(otherServices[i]);
+                        break;
+                    }
+                }
+                if (addnew) {
+                    otherServices.push(newInOut_OtherService);
+                    AddOtherServiceToList(newInOut_OtherService);
+                }
+                UpdateTotalAmount();
+            }
+        }
+        function UpdateTotalAmount() {
+            otherServiceAmount = 0;
+            for (var i = 0; i < otherServices.length; i++) {
+                if (otherServices[i].IsDel != true)
+                    otherServiceAmount += otherServices[i].Amount;
+            }
+            $('#otherServiceAmount').text(otherServiceAmount);
+            $('#roomServiceAmount').text(roomServiceAmount);
+            totalAmount = roomServiceAmount + otherServiceAmount;
+            $('#totalAmount').text(totalAmount);
+            $('.numberformat').number(true, 0, ',', '.');
+        }
+        function UpdateOtherServiceItem(item) {
+            var html = "  <button aria-label='Xóa' class='close' type='button' onClick='DelOtherServiceToList(" + item.OtherServiceId + ")'><span aria-hidden='true'>×</span></button>" +
+                "  <span class='badge btn-info quantity numberformat'>" + item.Amount + "</span>" +
+                "  <span class='badge btn-success quantity'>" + item.Quantity + "</span>" +
+                item.ServiceName;
+            $('#oService' + item.OtherServiceId).html(html);
+            UpdateTotalAmount();
+        }
+        function AddOtherServiceToList(item) {
+            var html = "<li id=oService" + item.OtherServiceId + " class='list-group-item'>" +
+                "  <button aria-label='Xóa' class='close' type='button' onClick='DelOtherServiceToList(" + item.OtherServiceId + ")'><span aria-hidden='true'>×</span></button>" +
+                "  <span class='badge btn-info quantity numberformat'>" + item.Amount + "</span>" +
+                "  <span class='badge btn-success quantity'>" + item.Quantity + "</span>" +
+                item.ServiceName +
+                "</li>";
+            $('#listOtherServices').append(html);
+        }
+        function DelOtherServiceToList(otherServiceId) {
+            $('#oService' + otherServiceId).remove();
+            for (var i = 0; i < otherServices.length; i++) {
+                if (otherServices[i].OtherServiceId == otherServiceId) {
+                    otherServices[i].IsDel = true;
+                    break;
+                }
+            }
+            UpdateTotalAmount();
+        }
+        var action;
+        function CheckIn(roomId, roomName, isDouble) {
+            action = "CheckIn";
+            ClearFormCheckInOut(isDouble);
+            $('#checkInOut').modal({ backdrop: 'static', keyboard: false, show: true });
+            $('#myModalLabel').text('Check in');
+            curentRoomId = roomId;
+            $('#roomName').text(roomName);
+            $('#personNumber').val(1);
+            $('#checkoutTime').prop('readonly', true);
+            $('#lengthStay').prop('readonly', true);
+            var currentTime = new Date();
+            $('#checkinTime').val(currentTime.getDate() + "/"
+                + (currentTime.getMonth() + 1) + "/"
+                + currentTime.getFullYear() + " "
+                + currentTime.getHours() + ":"
+                + currentTime.getMinutes());
+            //button
+            $('#btnCheckOut').hide();
+            $('#btnCancel').hide();
+            $('#btnCheckIn').show();
+        }
+        function CancelCheckIn() {
+            var data = JSON.stringify({ RoomId: curentRoomId });
+            $.ajax({
+                url: '/InOut/CancelCheckIn',
+                type: 'POST',
+                dataType: 'json',
+                data: data, contentType: 'application/json; charset=utf-8',
+                async: false,
+                success: function (c) {
+                    if (data.success) {
+                        location.reload();
+                    }
+                    else {
+                        alert(data.ErrInfo);
+                    }
+                },
+                error: function (event, request, settings) {
+                    alert("Có lỗi xãy ra, vui lòng tải lại trang");
+                }
+            });
+        }
+        function CheckOut(roomId, roomName, isDouble) {
+            action = "CheckOut";
+            ClearFormCheckInOut(isDouble);
+
+
+
+            $('#checkInOut').modal({ backdrop: 'static', keyboard: false, show: true });
+            $('#myModalLabel').text('Check out');
+            curentRoomId = roomId;
+            $('#roomName').text(roomName);
+
+
+
+            $.ajax({
+                url: '/InOut/GetCheckOutInfo',
+                type: 'GET',
+                dataType: 'json',
+                data: { roomId: curentRoomId },
+                //async: false,
+                success: function (data) {
+                    if (data.success) {
+                        var info = data.data;
+                        $('#personNumber').val(info.PersonNumber);
+                        $('#checkinTime').val(info.CheckInTimeStr);
+                        otherServiceAmount = info.OtherServiceAmount;
+                        $('#otherServiceAmount').text(otherServiceAmount);
+                        totalAmount = info.TotalAmount;
+                        $('#totalAmount').text(totalAmount);
+                        roomServiceAmount = 0;
+                        $('#note').val(info.Note);
+                        $('#roomServiceType').val(info.RoomServiceType);
+                        otherServices = info.OtherServices;
+                        $('#listOtherServices').html('');
+                        for (var i = 0; i < otherServices.length; i++) {
+                            AddOtherServiceToList(otherServices[i]);
+                        }
+                        var checkinTime = ConvertString2DateTime(info.CheckInTimeStr);
+                        var checkoutTime = new Date();
+                        $('#checkoutTime').val(checkoutTime.getDate() + "/"
+                            + (checkoutTime.getMonth() + 1) + "/"
+                            + checkoutTime.getFullYear() + " "
+                            + checkoutTime.getHours() + ":"
+                            + checkoutTime.getMinutes()) + ":"
+                            + checkoutTime.getSeconds();
+
+                        var checkinTime_t = ConvertString2DateTime($('#checkinTime').val().replace(/-/g, "/"));
+                        var checkoutTime_t = ConvertString2DateTime($('#checkoutTime').val().replace(/-/g, "/"));
+                        CalLengthStay(checkinTime_t, checkoutTime_t);
+
+                        GetRoomServiceAmount();
+                        UpdateTotalAmount();
+                    }
+                    else {
+                        alert(data.ErrInfo);
+                    }
+                },
+                error: function (event, request, settings) {
+                    alert("Có lỗi xãy ra, vui lòng tải lại trang");
+                }
+            });
+            //button
+            $('#btnCheckOut').show();
+            $('#btnCancel').show();
+            $('#btnCheckIn').hide();
+        }
+        function GetRoomServiceAmount() {
+            $.ajax({
+                url: '/InOut/GetRoomServiceAmount',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    roomServiceType: $('#roomServiceType option:selected').val(),
+                    lengthStay: $('#lengthStay').val()
+                },
+                //async: false,
+                success: function (data) {
+                    if (data.success) {
+                        roomServiceAmount = data.RoomServiceAmount;
+                        UpdateTotalAmount();
+                    }
+                    else {
+                        alert(data.ErrInfo);
+                    }
+                },
+                error: function (event, request, settings) {
+                    alert("Có lỗi xãy ra, vui lòng kiểm tra lại dữ liệu vừa nhập");
+                }
+            });
+        }
+
+
+        function roomServiceType_onChange() {
+
+            //t_CheckIn = ConvertString2DateTime($('#checkinTime').val().replace(/-/g, "/"));
+            //t_CheckOut = ConvertString2DateTime($('#checkoutTime').val().replace(/-/g, "/"));
+            var checkinTime = ConvertString2DateTime($('#checkinTime').val().replace(/-/g, "/"));
+            var checkoutTime = ConvertString2DateTime($('#checkoutTime').val().replace(/-/g, "/"));
+            CalLengthStay(checkinTime, checkoutTime);
+            GetRoomServiceAmount();
+        }
+        function CalLengthStay(checkinTime, checkoutTime) {
+            var seconds = Math.floor((checkoutTime - (checkinTime)) / 1000);
+            var totalMinutes = Math.floor(seconds / 60);
+            var hours = Math.floor(totalMinutes / 60);
+            var days = Math.floor(hours / 24);
+
+            hours = hours - (days * 24);
+            var minutes = totalMinutes - (days * 24 * 60) - (hours * 60);
+
+            if ($('#roomServiceType option:selected').val() == 0) { // theo giờ
+                $('#lengthStayAuto').val(hours + ':' + minutes);
+                $('#lengthStay').val(totalMinutes);
+            }
+            else if ($('#roomServiceType option:selected').val() == 1 || $('#roomServiceType option:selected').val() == 3) { // theo ngày
+                var n = days + hours / 24 + minutes / 60 / 24;
+                $('#lengthStayAuto').val(Math.round(n * 100) / 100);
+                $('#lengthStay').val(Math.ceil($('#lengthStayAuto').val()));
+            }
+            else {//2||4 : qua đêm
+                var n = days + hours / 24 + minutes / 60 / 24;
+                $('#lengthStayAuto').val(Math.round(n * 100) / 100);
+                Math.ceil(1.4);
+                $('#lengthStay').val(Math.ceil($('#lengthStayAuto').val()));
+            }
+        }
+
+        function ClearModal() {
+            $('#addroomName').val("");
+            $("#roomDouble").prop('checked', false);
+        }
+
+        function ClearFormCheckInOut(isDouble) {
+            $('#myModalLabel').text('');
+            $('#roomName').text('');
+            $('#personNumber').val('');
+            $('#checkinTime').prop('readonly', true);
+            $('#checkoutTime').prop('readonly', true);
+            $('#lengthStay').prop('readonly', true);
+            $('#lengthStayAuto').prop('readonly', true);
+            $('#lengthStay').val('');
+            $('#lengthStayAuto').val('00:00');
+            $('#checkinTime').val('');
+            $('#checkoutime').val('');
+            otherServices = [];
+            otherServiceAmount = 0;
+            $('#otherServiceAmount').text(otherServiceAmount);
+            $('#listOtherServices').html('');
+            roomServiceAmount = 0;
+            $('#roomServiceAmount').text(roomServiceAmount);
+            totalAmount = 0;
+            $('#totalAmount').text(totalAmount);
+            $('#quantity').html('0');
+            $('#note').val('');
+            $('#roomServiceType').html('');
+            if (isDouble) {
+                $('#roomServiceType').append('<option value="0">Phòng đơn/Theo giờ</option>');
+                $('#roomServiceType').append('<option value="1">Phòng đơn/Ngày đêm</option>');
+                $('#roomServiceType').append('<option value="2">Phòng đơn/Qua đêm</option>');
+                $('#roomServiceType').append('<option value="3">Phòng đôi/Ngày đêm</option>');
+                $('#roomServiceType').append('<option value="4">Phòng đôi/Qua đêm</option>)');
+            } else {
+                $('#roomServiceType').append('<option value="0">Phòng đơn/Theo giờ</option>');
+                $('#roomServiceType').append('<option value="1">Phòng đơn/Ngày đêm</option>');
+                $('#roomServiceType').append('<option value="2">Phòng đơn/Qua đêm</option>');
+            }
+        }
+        function ConvertString2DateTime(str) {
+            var tmp = str.split(' ');
+            var dateStr = tmp[0].split('/');
+            var d = parseInt(dateStr[0]);
+            var m = parseInt(dateStr[1]);
+            var y = parseInt(dateStr[2]);
+            var timeStr = tmp[1].split(':');
+            var hh = parseInt(timeStr[0]);
+            var mm = parseInt(timeStr[1]);
+            return new Date(y, m - 1, d, hh, mm);
+        }
+        function PostCheckIn(urlControler) {
+            var data = JSON.stringify({
+                RoomId: curentRoomId,
+                PersonNumber: $('#personNumber').val(),
+                CheckinTime: ConvertString2DateTime($('#checkinTime').val().replace(/-/g, "/")).toJSON(),
+                RoomServiceType: $('#roomServiceType option:selected').val(),
+                OtherServiceAmount: otherServiceAmount,
+                TotalAmount: totalAmount,
+                Note: $('#note').val(),
+                OtherServices: otherServices
+            });
+            $.ajax({
+                url: urlControler == null ? '/InOut/CheckIn' : urlControler,
+                type: 'POST',
+                dataType: 'json',
+                data: data, contentType: 'application/json; charset=utf-8',
+                async: false,
+                success: function (data) {
+                    if (data.success) {
+                        location.reload();
+                    }
+                    else {
+                        alert(data.ErrInfo);
+                    }
+                },
+                error: function (event, request, settings) {
+                    alert("Có lỗi xãy ra, vui lòng tải lại trang");
+                    console.log(event);
+                    console.log(request);
+                    console.log(settings);
+                }
+            });
+        }
+        function PostOtherServices() {
+            PostCheckIn("/InOut/PostOtherServices");
+        }
+        function PostCheckOut(isNotCheckOut) {
+            var data = JSON.stringify({
+                RoomId: curentRoomId,
+                PersonNumber: $('#personNumber').val(),
+                CheckinTime: ConvertString2DateTime($('#checkinTime').val().replace(/-/g, "/")).toJSON(),
+                CheckoutTime: ConvertString2DateTime($('#checkoutTime').val().replace(/-/g, "/")).toJSON(),
+                LengthStay: $('#lengthStay').val(),
+                RoomServiceType: $('#roomServiceType option:selected').val(),
+                OtherServiceAmount: otherServiceAmount,
+                TotalAmount: totalAmount,
+                Note: $('#note').val(),
+                OtherServices: otherServices,
+                IsNotCheckOut: isNotCheckOut
+            });
+            $.ajax({
+                url: '/Admin/InOut/PostCheckOut',
+                type: 'POST',
+                dataType: 'json',
+                data: data, contentType: 'application/json; charset=utf-8',
+                async: false,
+                success: function (data) {
+                    if (data.success) {
+                        if (!isNotCheckOut)
+                            location.reload();
+                    }
+                    else {
+                        alert(data.ErrInfo);
+                    }
+                },
+                error: function (event, request, settings) {
+                    alert("Có lỗi xãy ra, vui lòng tải lại trang");
+                    console.log(event);
+                    console.log(request);
+                    console.log(settings);
+                }
+            });
+        }
+        function Close_onclick() {
+            if (action == "CheckOut") {
+                PostOtherServices();
+            }
+            if (action == "CheckIn") {
+                $('#checkInOut').modal("hide");
+            }
+        }
+
+        function PrintInvoice() {
+            if (action == "CheckOut")
+                PostCheckOut(true);//update,ko phải check out
+            var win = window.open(document.location.href + "Bill/" + curentRoomId, "popupWindow", "width=600,height=600,scrollbars=yes");
+            //win.print();
+            //win.close();
+        }
+    </script>
 </body>
 </html>

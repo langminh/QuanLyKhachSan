@@ -1,54 +1,59 @@
-﻿
+﻿@using QuanLyKhachSan.Entity
 @{
     ViewBag.Title = "Vip";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    var list = new DataEntities().Rooms.Where(x => x.TypeID == 1).ToList();
+}
 <div class="grid_7">
-    <h3>Recent Posts</h3>
-    <div class="blog">
-        <time datetime="2014-10-01">15<span>Feb</span></time>
-        <div class="extra_wrapper">
-            <div class="text1 col1"><a href="#">uamnibh Edet Mertolo numi</a></div>Posted by
-            <a href="#">Admin</a>
+    <h3>Vip Room</h3>
+    @foreach (var item in list)
+    {
+        <div class="col-md-6">
+            <div class="extra_wrapper">
+                <div class="text1 col1"><a href="#">@item.RoomName</a></div>Posted by
+                <a href="#">Admin</a>
+            </div>
+            <div class="clear"></div>
+            <img src="@item.Src" alt="" class="img_inner">
+            @Html.Raw(item.Descreption)
+            <br>
+            @{if (!item.Status)
+                {
+                    <a id="room_@(item.RoomId)_btnCheckin" onclick="CheckIn(@item.RoomId,'@item.RoomName',@item.IsDouble.ToString().ToLower());" href="#">Đặt phòng</a>
+                }
+                else
+                {
+                    <a href="">Phòng đã được đặt</a>
+                }
+            }
         </div>
-        <div class="clear"></div>
-        <img src="images/page4_img1.jpg" alt="" class="img_inner">
-        <p>Cras facilisis, nulla vel viverra auctor, leo gna sodales felis, quis malesuada nibh odio ut velit. Proin pharetra luctus diam, a celerisque eros convallis accumsan. </p>Maecenas vehicula egestas venenatis. Duis massa elit, auctor non pellentesque vel aliquet sit amet erat. Nullam eget dignissim nisi, aliquam feugiat nibh.
-        <br>
-        <a href="#" class="link1">LEARN MORE</a>
-    </div>
-    <div class="blog">
-        <time datetime="2014-10-01">17<span>Feb</span></time>
-        <div class="extra_wrapper">
-            <div class="text1 col1"><a href="#">ERh EMertlo numolo</a></div>Posted by
-            <a href="#">Admin</a>
-        </div>
-        <div class="clear"></div>
-        <img src="images/page4_img2.jpg" alt="" class="img_inner">
-        <p>Cras facilisis, nulla vel viverra auctor, leo gna sodales felis, quis malesuada nibh odio ut velit. Proin pharetra luctus diam, a celerisque eros convallis accumsan. </p>Maecenas vehicula egestas venenatis. Duis massa elit, auctor non pellentesque vel aliquet sit amet erat. Nullam eget dignissim nisi, aliquam feugiat nibh.
-        <br>
-        <a href="#" class="link1">LEARN MORE</a>
-    </div>
+    }
 </div>
-<div class="grid_3 prefix_1">
-    <h3 class="head1">CATEGORIES</h3>
-    <ul class="list">
-        <li><a href="#">Suspendisse massa mi </a></li>
-        <li><a href="#">Porttitor at velit id </a></li>
-        <li><a href="#">Congue adipiscing </a></li>
-        <li><a href="#">Vestibulum vitae porta </a></li>
-        <li><a href="#">Vivamus ac sodales </a></li>
-        <li><a href="#">Massa quis adipiscing </a></li>
-        <li><a href="#">Phasellus hendrerit </a></li>
-        <li><a href="#">Libero in sapien </a></li>
-        <li><a href="#">Dignissim vel imperdiet </a></li>
-    </ul>
-    <h3 class="head1">ARchives</h3>
-    <ul class="list">
-        <li><a href="#">November 2013</a></li>
-        <li><a href="#">October 2013</a></li>
-        <li><a href="#">September 2013</a></li>
-        <li><a href="#">August 2013</a></li>
-        <li><a href="#">July 2013</a></li>
-    </ul>
+<div class="row">
+    <div class="col-md-6">
+        <h3 class="head1">Danh sách các phòng</h3>
+        <ul class="list">
+            @{ var temp = new DataEntities().Types.OrderBy(x => x.TypeID).ToList();}
+            @foreach (var item in temp)
+            {
+                <li><a href="/Room/Room/@item.TypeID">@item.TypeName</a></li>
+            }
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <h3 class="head1">Phòng nổi bật</h3>
+        <ul class="list">
+            @{ var temp_1 = new DataEntities().Rooms.Where(x => x.TypeID == 2).ToList();}
+            @foreach (var item in temp_1)
+            {
+                if (item.Status)
+                {
+                    continue;
+                }
+                <li><a href="/Room/Detail/@item.RoomId">@item.RoomName</a></li>
+            }
+        </ul>
+    </div>
 </div>
